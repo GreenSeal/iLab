@@ -42,7 +42,7 @@ int main() {
        printf("\n%s",OneginStrAdd2[i]);
     }*/
     
-    qsort(OneginStrAdd2,50000, sizeof(char**), cmp);
+    qsort(OneginStrAdd2,count, sizeof(char**), cmp);
     
     for(int i = 0; i<=500; i++) {
        printf("%s",OneginStrAdd2[i]); 
@@ -56,7 +56,7 @@ int cmp(const void * x1,const void * x2) {
     printf("Ti tupoy");
     char el1,el2;
     
-    for(int i = 0; i<=50000 ; i++) {
+    for(int i = 0;; i++) {
         el1 = Str1[i];
         el2 = Str2[i];
         if (el1 > el2) 
