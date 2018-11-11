@@ -33,7 +33,7 @@ int main() {
             OneginStrAdd2[count] = OneginStr + i+1;
             OneginStrAdd3[count] = OneginStr + i+1;
             if (OneginStrAdd[count] == NULL || OneginStrAdd2[count] == NULL || OneginStrAdd3[count] == NULL)
-                printf("Debik");
+                printf("Ti glupij");
             ++count;
         }
     }
@@ -53,7 +53,7 @@ int cmp(const void * x1,const void * x2) {
     char* Str1 = *(char**)x1;
     char* Str2 = *(char**)x2;
     
-    printf("debik");
+    printf("Ti tupoy");
     char el1,el2;
     
     for(int i = 0; i<=50000 ; i++) {
