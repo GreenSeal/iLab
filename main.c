@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<ctype.h>
 
 int cmp(const void * x1,const void * x2);
 
@@ -16,7 +17,7 @@ int main() {
         
     Onegin_alf = fopen("Onegin_alf.txt","w");
     Onegin_ryhm = fopen("Onegin_ryhm.txt","w");
-    
+
     char* OneginStr = (char*) calloc(500000,sizeof(char));
     char** OneginStrAdd = (char**) calloc (50000, sizeof(char*));
     char** OneginStrAdd2 = (char**) calloc (50000, sizeof(char*));
@@ -50,7 +51,7 @@ int cmp(const void * x1,const void * x2) {
     int count1 = 0;
     int count2 = 0;
     
-    for(int i = 0;; i++) {
+    for(;;) {
         
         for (;;){
             if (Str1[count1] == '`' || Str1[count1] == ' ')
@@ -61,6 +62,11 @@ int cmp(const void * x1,const void * x2) {
                 break;
         }
         
+        if (Str1[count1] >= 'A' && Str1[count1] <= 'Z')
+           Str1[count1] = tolower(Str1[count1]);
+            
+        if (Str2[count2] >= 'A' && Str2[count2] <= 'Z')
+            Str2[count2] = tolower(Str2[count2]);
         
         if (Str1[count1] > Str2[count2]) { 
             return 1;
