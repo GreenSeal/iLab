@@ -47,16 +47,34 @@ int cmp(const void * x1,const void * x2) {
     char* Str1 = *(char**)x1;
     char* Str2 = *(char**)x2;
     
-    char el1,el2;
+    int count1 = 0;
+    int count2 = 0;
     
     for(int i = 0;; i++) {
-        el1 = Str1[i];
-        el2 = Str2[i];
-        if (el1 > el2) 
+        
+        for (;;){
+            if (Str1[count1] == '`' || Str1[count1] == ' ')
+                count1 ++;
+            if (Str2[count2] == '`' || Str2[count2] == ' ')
+                count2 ++;
+            if (Str1[count1] != '`' && Str1[count1] != ' ' && Str2[count2] != '`' && Str2[count2] != ' ')
+                break;
+        }
+        
+        
+        if (Str1[count1] > Str2[count2]) { 
             return 1;
-        if (el1 < el2)
+        }
+        if (Str1[count1] < Str2[count2]) {
             return -1;
-        if (el1 == '\0' || el2 == '\0')
-            return 0;
+        }
+        
+        if (Str1[count1] == '\0' || Str2[count2] == '\0') {
+            if (Str1[count1 + 1] == 0)
+                return 1;
+            if (Str2[count2 + 1] == 0)
+                return -1;
+        }
+        count1++; count2++;
     }
 }
