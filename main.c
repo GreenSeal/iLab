@@ -12,7 +12,7 @@ int main() {
     Onegin = fopen("Onegin.txt","r");
     
     if(Onegin == NULL)
-        printf("dgagga");
+        printf("File couldn't open");
         
     Onegin_alf = fopen("Onegin_alf.txt","w");
     Onegin_ryhm = fopen("Onegin_ryhm.txt","w");
@@ -23,7 +23,7 @@ int main() {
     char** OneginStrAdd3 = (char**) calloc (50000, sizeof(char*));
     
     fread(OneginStr,sizeof(char),500000, Onegin);
-    
+        
     int count = 0;
     
     for (int i = 0; i<= 500000; i++) {
@@ -32,20 +32,14 @@ int main() {
             OneginStrAdd[count] = OneginStr + i+1;
             OneginStrAdd2[count] = OneginStr + i+1;
             OneginStrAdd3[count] = OneginStr + i+1;
-            if (OneginStrAdd[count] == NULL || OneginStrAdd2[count] == NULL || OneginStrAdd3[count] == NULL)
-                printf("Ti glupij");
             ++count;
         }
     }
     
-   /* for(int i = 0; i<=500; i++) {
-       printf("\n%s",OneginStrAdd2[i]);
-    }*/
+    qsort(OneginStrAdd2, count, sizeof(char**), cmp);
     
-    qsort(OneginStrAdd2,count, sizeof(char**), cmp);
-    
-    for(int i = 0; i<=500; i++) {
-       printf("%s",OneginStrAdd2[i]); 
+    for(int i = 0; i<=count; i++) {
+       printf("\n%s",OneginStrAdd2[i]); 
     }
 }
 
@@ -53,7 +47,6 @@ int cmp(const void * x1,const void * x2) {
     char* Str1 = *(char**)x1;
     char* Str2 = *(char**)x2;
     
-    printf("Ti tupoy");
     char el1,el2;
     
     for(int i = 0;; i++) {
