@@ -28,7 +28,7 @@ int main() {
     int count = 0;
     
     for (int i = 0; i<= 500000; i++) {
-        if (OneginStr[i] == '\n'){
+        if (OneginStr[i] == '\n') {
             OneginStr[i] = '\0';
             OneginStrAdd[count] = OneginStr + i+1;
             OneginStrAdd2[count] = OneginStr + i+1;
@@ -54,32 +54,31 @@ int cmp(const void * x1,const void * x2) {
     for(;;) {
         
         for (;;){
-            if (Str1[count1] == '`' || Str1[count1] == ' ')
+            if (Str1[count1] == '`' || Str1[count1] == ' ' || Str1[count1] == '}' || Str1[count1] == '{' || isdigit(Str1[count1]) != 0)
                 count1 ++;
-            if (Str2[count2] == '`' || Str2[count2] == ' ')
+            else if (Str2[count2] == '`' || Str2[count2] == ' ' || Str2[count2] == '}' || Str2[count2] == '{' || isdigit(Str2[count2]) != 0)
                 count2 ++;
-            if (Str1[count1] != '`' && Str1[count1] != ' ' && Str2[count2] != '`' && Str2[count2] != ' ')
-                break;
+                 else break;
         }
         
-        if (Str1[count1] >= 'A' && Str1[count1] <= 'Z')
-           Str1[count1] = tolower(Str1[count1]);
-            
-        if (Str2[count2] >= 'A' && Str2[count2] <= 'Z')
-            Str2[count2] = tolower(Str2[count2]);
+        char el1 = Str1[count1];
+        char el2 = Str2[count2];
         
-        if (Str1[count1] > Str2[count2]) { 
+        if (el1 >= 'A' && el1 <= 'Z')
+           el1 = tolower(el1);
+            
+        if (el2 >= 'A' && el2 <= 'Z')
+            el2 = tolower(el2);
+        
+        if (el1 > el2) { 
             return 1;
         }
-        if (Str1[count1] < Str2[count2]) {
+        if (el1 < el2) {
             return -1;
         }
         
-        if (Str1[count1] == '\0' || Str2[count2] == '\0') {
-            if (Str1[count1 + 1] == 0)
-                return 1;
-            if (Str2[count2 + 1] == 0)
-                return -1;
+        if (el1 == '\0' || el2 == '\0') {
+           return 0;
         }
         count1++; count2++;
     }
