@@ -3,7 +3,10 @@
 #include<string.h>
 #include<ctype.h>
 
+
 int cmp(const void * x1,const void * x2);
+int WriteDownAdd(char* Str, char** StrAdd, char** StrAdd2, char** StrAdd3, int SizeAdd);
+int CountSymbols(FILE* file, int* size);
 
 int main() {
     
@@ -11,37 +14,35 @@ int main() {
     FILE* Onegin_alf = NULL;
     FILE* Onegin_ryhm = NULL;
     Onegin = fopen("Onegin.txt","r");
-    
-    if(Onegin == NULL)
-        printf("File couldn't open");
-        
     Onegin_alf = fopen("Onegin_alf.txt","w");
     Onegin_ryhm = fopen("Onegin_ryhm.txt","w");
-
-    char* OneginStr = (char*) calloc(500000,sizeof(char));
-    char** OneginStrAdd = (char**) calloc (50000, sizeof(char*));
-    char** OneginStrAdd2 = (char**) calloc (50000, sizeof(char*));
-    char** OneginStrAdd3 = (char**) calloc (50000, sizeof(char*));
     
-    fread(OneginStr,sizeof(char),500000, Onegin);
+    if (Onegin == NULL)
+        printf ("File on read couldn't open");
+    if (Onegin_alf == NULL)
+        printf ("File to sort by alphabet couldn't open");
+    if (Onegin_ryhm == NULL)
+        printf ("File to sort by ryhms couldn't open");
         
-    int count = 0;
+    int size2 = 0;
+    int size = CountSymbols(Onegin, &size2);
     
-    for (int i = 0; i<= 500000; i++) {
-        if (OneginStr[i] == '\n') {
-            OneginStr[i] = '\0';
-            OneginStrAdd[count] = OneginStr + i+1;
-            OneginStrAdd2[count] = OneginStr + i+1;
-            OneginStrAdd3[count] = OneginStr + i+1;
-            ++count;
-        }
-    }
+    char* OneginStr = (char*) calloc(size+1,sizeof(char));
+    char** OneginStrAdd = (char**) calloc (size2+1, sizeof(char*));
+    char** OneginStrAdd2 = (char**) calloc (size2+1, sizeof(char*));
+    char** OneginStrAdd3 = (char**) calloc (size2 +1, sizeof(char*));
     
-    qsort(OneginStrAdd2, count, sizeof(char**), cmp);
+    fread(OneginStr,sizeof(char), size+1, Onegin);
+    
+    int count = WriteDownAdd(OneginStr, OneginStrAdd, OneginStrAdd2, OneginStrAdd3, size+1);
+    
+    
+    qsort(OneginStrAdd2, count+1, sizeof(char**), cmp);
     
     for(int i = 0; i<=count; i++) {
-       printf("\n%s",OneginStrAdd2[i]); 
+       printf("%s\n",OneginStrAdd2[i]); 
     }
+    fclose(Onegin);
 }
 
 int cmp(const void * x1,const void * x2) {
@@ -54,9 +55,13 @@ int cmp(const void * x1,const void * x2) {
     for(;;) {
         
         for (;;){
-            if (Str1[count1] == '`' || Str1[count1] == ' ' || Str1[count1] == '}' || Str1[count1] == '{' || isdigit(Str1[count1]) != 0)
+            if (Str1[count1] == '`' || Str1[count1] == ' ' || Str1[count1] == '}' 
+            || Str1[count1] == '{' || isdigit(Str1[count1]) != 0 || Str1[count1] == '<' 
+            || Str1[count1] == '"')
                 count1 ++;
-            else if (Str2[count2] == '`' || Str2[count2] == ' ' || Str2[count2] == '}' || Str2[count2] == '{' || isdigit(Str2[count2]) != 0)
+            else if (Str2[count2] == '`' || Str2[count2] == ' ' || Str2[count2] == '}' 
+                || Str2[count2] == '{' || isdigit(Str2[count2]) != 0 || Str2[count2] == '<' 
+                || Str2[count2] == '"')
                 count2 ++;
                  else break;
         }
@@ -82,4 +87,52 @@ int cmp(const void * x1,const void * x2) {
         }
         count1++; count2++;
     }
+}
+
+int WriteDownAdd(char* Str, char** StrAdd, char** StrAdd2, char** StrAdd3, int SizeAdd) {
+    printf("%d", SizeAdd);
+    int count = 0;
+    
+    for (int i = 0; i<= SizeAdd; i++) {
+        if (Str[i] == '\n') {
+            Str[i] = '\0';
+            StrAdd[count] = Str + i + 1;
+            StrAdd2[count] = Str + i + 1;
+            StrAdd3[count] = Str + i + 1;
+            
+            if (StrAdd[count] == 0)
+                printf ("Address don't writedown in massive 1");
+            if (StrAdd2[count] == 0)
+                printf ("Address don't writedown in massive 2");
+            if (StrAdd3[count] == 0)
+                printf ("Address don't writedown in massive 3");
+           
+            ++count;
+        }
+    }
+    return count;
+}
+
+int CountSymbols(FILE* file, int* size) {
+    
+    int count1 = 0;
+    char buf = 0;
+    
+    fseek(file, 0, SEEK_SET);
+    
+    while(feof(file) == 0) {
+        
+        fscanf(file, "%c", &buf);
+        
+        count1 ++;
+        
+        if ( buf == '\0' || buf == '\n')
+            count1 ++;
+        
+        if ( buf == '\n') {
+            (*size) ++;
+        }
+    }
+    fseek(file, 0, SEEK_SET);
+    return count1;
 }
