@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 typedef struct Node_ Node;
-typedef struct List_ List;
 
 Node* Create(int data_to_fill);
 int Print(Node AnyNode);
@@ -11,9 +10,10 @@ int Link(Node* next, Node* prev, Node* AddNode);
 int Swap(Node* AddNode1, Node* AddNode2);
 Node* Search(Node* AddNode, Node* AnyAddNode);
 int Idx(Node* AddNode, Node* AnyAddNode);
+int DeleteList(Node* AnyAddNode, int (*Delete) (Node*));
 
 struct Node_ {
-    int data;
+    int data; 
     Node* next;
     Node* prev;
 };
@@ -23,10 +23,11 @@ int main() {
 	Node New_Node1 = *(Create(1));
     Node New_Node2 = *(Create(2));
     Node New_Node3 = *(Create(3));
-    Link(&New_Node3, &New_Node1, &New_Node2);
+    Link(&New_Node1, &New_Node2, &New_Node3);
     //Delete(&New_Node2);
+    DeleteList(&New_Node2, Delete);
     //PrintNode(New_Node2);
-    Swap(&New_Node2, &New_Node3);
+    //Swap(&New_Node2, &New_Node3);
     printf("%d", ((New_Node1.next) -> data));
 	return 0;
 }
@@ -39,11 +40,6 @@ int Print(Node AnyNode) {
 }
 
 Node* Create(int data_to_fill) {
-    
-    if(sizeof(data_to_fill) != sizeof(int)) {
-        printf("Not allowed type. Code 2");
-        return 1;
-    }
     
     Node* New_node = (Node*) calloc (1, sizeof(Node));
     
@@ -61,17 +57,6 @@ int Link(Node* next, Node* prev, Node* AddNode) {
         return 1;
     }
     
-    if((sizeof(*next) != sizeof(Node))  && (next != NULL)) {
-        printf("Not allowed type. Code 2");
-        return 1;
-    }
-    
-    if((sizeof(*prev) != sizeof(Node)) && (prev != NULL)) {
-        printf("Not allowed type. Code 2");
-        return 1;
-    }
-        
-    
     AddNode -> next = next;
     AddNode -> prev = prev;
     next -> prev = AddNode;
@@ -87,8 +72,12 @@ int Delete(Node* AddNode) {
         return 1;
     }
     
+    if(AddNode -> next != NULL)
     AddNode -> next -> prev = AddNode -> prev;
+    
+    if (AddNode -> prev != NULL)
     AddNode -> prev -> next = AddNode -> next;
+    
     AddNode -> prev = NULL;
     AddNode -> next = NULL;
     free(AddNode);
@@ -122,7 +111,7 @@ Node* Search(Node* AddNode, Node* AnyAddNode) {
     
     if ((AddNode == NULL) || (AnyAddNode == NULL)){
         printf("Node doesn't exist. Code 1");
-        return 1;
+        //return 1;
     }
     
     Node* buf = AnyAddNode;
@@ -163,4 +152,22 @@ int Idx(Node* AddNode, Node* AnyAddNode) {
     }
     
     return idx;
+}
+
+int DeleteList(Node* AnyAddNode, int (*Delete) (Node* AddNode)) {
+    
+    if(AnyAddNode == NULL) {
+        printf("Node doesn't exist. Code 1");
+        return 1;
+    }
+    
+    Node* buf = AnyAddNode;
+    
+    while((buf -> next) != NULL)
+        buf = buf -> next;
+        
+    while(buf -> prev != NULL)
+        Delete(buf);
+        buf = buf -> prev;
+        return 0;
 }
