@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <assert.h>
-#include <vector>
-#include <string>
-#include <iostream>
+#include "CPU.h"
 
 std::vector<char> Loading(FILE* File) {
 	
@@ -25,24 +21,23 @@ std::vector<std::string> Tokenisation(FILE* ASMFile) {
 	std::vector<std::string>::iterator it_tokens = Tokens.begin();
 	char bufchar = '0';
 	std::string bufstring = "";
+	unsigned int size_file = VectorFile.size();
+	int i = 0;
 
-	for(it_file; it_file != VectorFile.end(); it_file++) {
+	for(i = 0; i <= size_file - 1; i++) {
 		
-		bufchar = *it_file;
+		bufchar = VectorFile[i];
 		
-		if(isspace(bufchar) != 0) {
+		if(isspace(bufchar) != 0 && bufstring != "") {
 			Tokens.push_back(bufstring);
 			bufstring = "";
 		}
 
+		if(isspace(VectorFile[i]) != 0 && bufstring == "") continue;
+
 		else {
 			bufstring = bufstring + bufchar;
 		}
-	}
-
-	for (it_tokens = Tokens.begin(); it_tokens != Tokens.end(); it_tokens++) {
-		std::cout << *it_tokens;
-		printf(" ");
 	}
 	
 	return Tokens;
@@ -50,8 +45,11 @@ std::vector<std::string> Tokenisation(FILE* ASMFile) {
 
 int main () {
 	FILE* ASMFile = fopen("ASM.txt","r");
-	Tokenisation(ASMFile);
-	std::vector<int> arr_int;
+	std::vector<std::string> TokenTable = Tokenisation(ASMFile);
+	std::vector<struct elem_table_comands> CmdTable = Translation(TokenTable);
+	Logics(CmdTable);
+	CmdTable = Marks(CmdTable);
+	CPU(CmdTable);
 	fclose(ASMFile);
 	return 0;
 }
