@@ -67,4 +67,3 @@ StackNode* Stack::Div() {
         Cur -> data = b / a;
         return Cur;
 }
-

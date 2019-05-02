@@ -99,7 +99,7 @@ std::vector<struct elem_table_comands> Translation (std::vector<std::string> Tok
 	int i = 0, j = -1, k = 0, m = 0, code_jump = 0;
 
 	for(i = 0; i <= size_tokens - 1; i++) {
-		//j++;
+		j++;
 		int code_error = 1;
 		
 		for(k = 0; k <= size_funcs - 1; k++){
