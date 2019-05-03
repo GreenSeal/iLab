@@ -24,6 +24,7 @@ std::vector<elem_table_comands> Marks (std::vector<elem_table_comands> CmdTable)
 
 	unsigned int size_marks = TableMarks.size();
 	std::vector<elem_table_marks>::iterator it_marks = TableMarks.begin();
+	size_cmd = CmdTable.size();
 
 	for(i = 0; i <= size_cmd - 1; i++) {
 		
