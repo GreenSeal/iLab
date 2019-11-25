@@ -1,0 +1,50 @@
+push 1
+push 1
+sub
+
+in ax
+in bx
+
+push ax
+je endd
+
+push bx
+push bx
+add
+push bx
+sub
+pop bx
+
+push ax
+push bx
+div
+
+pop cx
+
+push 7
+push 7
+je ret
+
+endd:
+push 1
+push 1
+sub
+
+push bx
+je ends
+
+push -1000
+pop cx
+
+push 7
+push 7
+je rets
+
+ends:
+push 1000
+pop cx
+ 
+rets:
+ret:
+out cx
+
